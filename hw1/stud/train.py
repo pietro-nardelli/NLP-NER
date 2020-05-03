@@ -7,29 +7,24 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-
+#Class to train and evaluate the model
 class Trainer():
-    """Utility class to train and evaluate a model."""
 
     def __init__(
         self,
         model,
         loss_function,
         optimizer):
-        """
-        Args:
-            model: the model we want to train.
-            loss_function: the loss_function to minimize.
-            optimizer: the optimizer used to minimize the loss_function.
-        """
+
         self.model = model
         self.loss_function = loss_function
         self.optimizer = optimizer
 
+    #Plot train and validation loss
     def plotLearning (self, N, train_loss_list, val_loss_list):
         x = [i for i in range(N)]
 
-        plt.ylabel('Metrics')
+        plt.ylabel('Loss')
         plt.xlabel('Epochs')
 
 
@@ -68,8 +63,6 @@ class Trainer():
                 # because PyTorch accumulates the gradients on subsequent backward passes
                 self.optimizer.zero_grad()
 
-                # forward + backward + optimize
-
                 predictions = self.model(inputs)
 
                 '''
@@ -94,20 +87,19 @@ class Trainer():
             avg_epoch_loss = epoch_loss / len(train_dataset)
             val_loss= self.evaluate(valid_dataset)
 
+            #Instantiated for plotLearning
             train_loss_list.append(avg_epoch_loss)
             val_loss_list.append(val_loss)
 
             print ("\nepoch: ", epoch+1, "avg_epoch_loss: ", avg_epoch_loss,"val_loss: ", val_loss)
         print('Finished Training')
 
-        #print (epochs)
         self.plotLearning(epochs, train_loss_list, val_loss_list)
 
     def evaluate(self, valid_dataset):
         """
         Args:
             valid_dataset: the dataset to use to evaluate the model.
-
         Returns:
             avg_valid_loss: the average validation loss over valid_dataset.
         """
@@ -127,11 +119,3 @@ class Trainer():
                 valid_loss += loss.item()
 
         return valid_loss / len(valid_dataset)
-
-
-    def predict(self, x):
-        """
-        Returns: hopefully the right prediction.
-        """
-        self.model.eval() # NO dropout
-        return self.model(x).tolist()

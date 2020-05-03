@@ -11,7 +11,7 @@ Project developed for Natural Language Processing course held by professor R. Na
 - Install requirements: `pip install requirements.txt`
 
 ## Usage
-Before starting, download the FastText pretrained word-embedding [wiki-news-300d-1M-subword.vec.zip](https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M-subword.vec.zip)
+Before starting, download the FastText pretrained word-embedding [wiki-news-300d-1M.vec.zip](https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M.vec.zip)
 unzipping it inside the `model` folder. Any other pretrained word-embedding can be used, just remember to change 
 accordingly the embedding size.
 To train and test the network just run the Jupyter Notebook `main.pynb`. It's possible to change hyperparameters of

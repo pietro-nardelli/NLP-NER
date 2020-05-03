@@ -28,9 +28,7 @@ class StudentModel(Model):
 
     def __init__(self, device):
         #Initialize the instance of MyModel
-
-        #embedding_layer = torch.load("model/best_embedding_layer.pt")
-        embedding_layer = torch.load("model/embedding_layer_notrain.pt")
+        embedding_layer = torch.load("model/best_embedding_layer.pt")
         self.model = MyModel(
             input_size=100843,
             output_size=5,
@@ -40,8 +38,7 @@ class StudentModel(Model):
 
 
         #Load the weights so we can use in prediction mode
-        #self.model.load_state_dict(torch.load("model/best_model.pt"))
-        self.model.load_state_dict(torch.load("model/model_notrain.pt"))
+        self.model.load_state_dict(torch.load("model/best_model.pt"))
         self.sentences_vocabulary = torch.load("model/sentences_vocabulary.pt")
 
 

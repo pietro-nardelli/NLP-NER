@@ -19,7 +19,6 @@ def create_windows (sentences, window_size, window_shift):
 
 #Create a vocabulary (token -> key) from a list of sentences
 def create_vocabulary(sentences):
-
     vocabulary = {}
     for sentence in sentences:
         for i,c in enumerate(sentence):
@@ -54,18 +53,25 @@ def create_embedding (path, dictionary, embedding_size):
         temp_float = []
         for t in temp[1:]:
           temp_float.append(float(t))
-        temp_float = np.asarray(temp_float)     #temp_float is a a numpy array of ['string', floatx100]
-        token = temp[0]                         #temp[0] is the "token"
+        #temp_float is a a numpy array of ['string', float, float, ... x100]
+        temp_float = np.asarray(temp_float)
+        #temp[0] is the "token"
+        token = temp[0]
 
+        #vocabulary of pretrained embeddings
         embedding_vocab [token] = np.asarray(temp_float)
+
 
     embedding_list = []
     for i,c in enumerate(dictionary):
         if (c=='<PAD>'):
+            #Append array of zeros if <PAD>
             embedding_list.append(np.zeros(embedding_size))
         elif (c in embedding_vocab):
+            #Append the corresponding embedding if the word is in sentences dictionary
             embedding_list.append(embedding_vocab[c])
         else:
+            #Append a random embedding
             embedding_list.append(np.random.rand(embedding_size))
 
     embedding_matrix = torch.FloatTensor(np.asarray(embedding_list))

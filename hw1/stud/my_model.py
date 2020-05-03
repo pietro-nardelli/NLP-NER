@@ -9,24 +9,24 @@ class MyModel(nn.Module):
             self.hidden_dim = HParam.hidden_dim
             self.n_layers = HParam.n_layers
 
+            #Embedding layer
             self.word_embedding = embedding_layer
 
             # RNN Layer
             self.gru = nn.GRU(HParam.embedding_size, self.hidden_dim, self.n_layers, batch_first=True, bidirectional=HParam.bidirectional)
-
-
-            self.gru_out_dim = self.hidden_dim*2 if (HParam.bidirectional) else self.hidden_dim
+            self.gru_out_dim = self.hidden_dim*2 if (HParam.bidirectional) else self.hidden_dim #Check if bidirectional
 
             # Fully connected layer
             self.fc = nn.Linear(self.gru_out_dim, int(self.hidden_dim/2))
+            self.fc2 = nn.Linear(int(self.hidden_dim/2), output_size)
+
+            #Activation functions and other layers
             self.relu = nn.ReLU()
             self.dropout = nn.Dropout(HParam.dropout)
 
 
-            self.fc2 = nn.Linear(int(self.hidden_dim/2), output_size)
 
         def forward(self, x):
-
             batch_size = x.size(0)
 
             # Hidden state initialization for the first input
@@ -37,14 +37,12 @@ class MyModel(nn.Module):
 
             gru_out, h = self.gru(embeddings, hidden)
 
-
-            # Reshaping the outputs such that it can be fit into the fully connected layer
+            # Reshaping the outputs such that it can be fit into the FC layer
             out = gru_out.contiguous().view(-1, self.gru_out_dim)
 
             out = self.fc(out)
             out = self.relu(out)
             dropout = self.dropout(out)
-
             out = self.fc2(out)
             dropout = self.dropout(out)
             out = dropout
@@ -52,9 +50,9 @@ class MyModel(nn.Module):
             return out
 
         def init_hidden(self, batch_size):
-            # This method generates the first hidden state of zeros which we'll use in the forward pass
-            # We'll send the tensor holding the hidden state to the device we specified earlier as well
+            # This method generates the first hidden state of zeros
 
+            #Check if bidirectional
             mult = 2 if (HParam.bidirectional) else 1
 
             hidden = torch.zeros(self.n_layers*mult, batch_size, self.hidden_dim)
