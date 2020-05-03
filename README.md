@@ -8,7 +8,7 @@ Project developed for Natural Language Processing course held by professor R. Na
 - Install anaconda
 - Create the environment: `$ conda create --name nlp-ner python==3.7`
 - Activate the environment: `$ conda activate nlp-ner`
-- Install requirements: `pip install requirements.txt`
+- Install requirements: `pip install -r requirements.txt`
 
 ## Usage
 Before starting, download the FastText pretrained word-embedding [wiki-news-300d-1M.vec.zip](https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M.vec.zip)
